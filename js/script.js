@@ -85,7 +85,96 @@ function gradeQuiz() {
     wrongAnswer(4);
   }
 
-  document.querySelector("#totalScore").textContent = `Total Score: ${score}`;
+  let q5Response = document.querySelector("#q5").value.trim.toLowerCase();
+
+  if (q5Response.includes("grand canyon")) {
+    rightAnswer(5);
+  } else {
+    wrongAnswer(5);
+  }
+
+  let selectedQ6 = document.querySelector("input[name=q6]:checked");
+
+  if (selectedQ6 !== null && selectedQ6.value === "Alaska") {
+    rightAnswer(6);
+  } else {
+    wrongAnswer(6);
+  }
+
+  let pacificStates = [];
+
+  if (document.querySelector("#CaliforniaPacific").checked) {
+    pacificStates.push("California");
+  }
+
+  if (document.querySelector("#OregonPacific").checked) {
+    pacificStates.push("Oregon");
+  }
+
+  if (document.querySelector("#TexasPacific").checked) {
+    pacificStates.push("Texas");
+  }
+
+  if (document.querySelector("#NevadaPacific").checked) {
+    pacificStates.push("Nevada");
+  }
+
+  pacificStates.sort();
+
+  if (
+    pacificStates.length === 2 &&
+    pacificStates.includes("California") &&
+    pacificStates.includes("Oregon")
+  ) {
+    rightAnswer(7);
+  } else {
+    wrongAnswer(7);
+  }
+
+  let q8Response = document.querySelector("#q8").value;
+
+  if (q8Response === "Denver") {
+    rightAnswer(8);
+  } else {
+    wrongAnswer(8);
+  }
+
+  let q9Response = document.querySelector("#q9").value;
+
+  if (q9Response === "50") {
+    rightAnswer(9);
+  } else {
+    wrongAnswer(9);
+  }
+
+  let q10Response = document.querySelector("#q10").value;
+
+  if (q10Response === "1776-07-04") {
+    rightAnswer(10);
+  } else {
+    wrongAnswer(10);
+  }
+
+  document.querySelector("#totalScore").textContent = `Total Score: ${score} / 100`;
+
+const totalScore = document.querySelector("#totalScore");
+
+if (score > 80){
+  totalScore.className = "text-success";
+  document.querySelector("#congrats").textContent = "Congratulation! Good Work!";
+} else {
+  totalScore.className = "text-danger";
+  document.querySelector("#congrats").textContent = "";
+}
+
+let attempts = Number(localStorage.getItem("total_attempts")) || 0;
+
+attempts++;
+
+localStorage.setItem("total_attempts", attempts)
+
+document.querySelector("#totalAttempts").textContent = `Total Attempts: ${attempts}`;
+  
 }
 
 let score = 0;
@@ -105,7 +194,7 @@ function rightAnswer(index) {
   feedback.textContent = "Correct!";
   feedback.className = "bg-success text-white";
   setMarkImage(index, "checkmark.png", "Checkmark");
-  score += 20;
+  score += 10;
 }
 
 function wrongAnswer(index) {
@@ -148,33 +237,10 @@ function displayQ4Choices() {
   }
 }
 
-let attempts = localStorage.getItem("total_attempts");
+let attempts =
+  Number(localStorage.getItem("total_attempts")) || 0;
 
-if (attempts === null) {
-  attempts = 0;
-} else {
-  attempts = Number(attempts);
-}
-
-document.querySelector("#totalScore").textContent = `Total Score: ${score}`;
-
-const totalScore = document.querySelector("#totalScore");
-
-if (score < 80){
-    totalScore.className = "text-danger";
-} else {
-    totalScore.className = "text-success";
-}
-
-if (score >= 80) {
-    const message = document.createElement("h3");
-    message.textContent = "Congrats! You got a perfect score!";
-    message.className = "text-success";
-    document.body.appendChild(message);
-}
-
-attempts++;
-document.querySelector("#totalAttempts").textContent = `Total Attempts: ${attempts}`;
-localStorage.setItem("total_attempts", attempts);
+document.querySelector("#totalAttempts").textContent =
+  `Total Attempts: ${attempts}`;
 
 displayQ4Choices();
